@@ -14,4 +14,4 @@ Este projeto serve como uma base de conhecimento prática, onde exploro soluçõ
 
 1. **Clone o repositório:**
    ```bash
-   git clone [https://github.com/MatheusO50/algorithms-study.git](https://github.com/MatheusO50/algorithms-study.git)
+   git clone https://github.com/MatheusO50/algorithms-study.git
