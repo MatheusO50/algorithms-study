@@ -2,9 +2,6 @@
 
 > Repositório dedicado ao estudo, implementação e análise de complexidade de algoritmos fundamentais.
 
-![Status](https://img.shields.io/badge/Status-Em%20Progresso-blue)
-![License](https://img.shields.io/badge/License-MIT-green)
-
 Este projeto serve como uma base de conhecimento prática, onde exploro soluções para problemas clássicos de computação, focando em escrita de código limpo e eficiência.
 
 ---
