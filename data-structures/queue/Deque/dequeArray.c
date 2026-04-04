@@ -1,92 +1,121 @@
+/*
+Deque é uma variação de queue 
+mas com funções específica como inserir
+e deletar tanto no começo tanto no final
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
-#define MAX 3
+#include <limits.h>
+#define MAX 4
 
 typedef struct Deque {
-    int *arr , front , rear;
+    int front , *arr , rear;
 } Deque;
 
-Deque *initDeque() {
-    Deque *deque = (Deque*)malloc(sizeof(Deque));
-    deque->arr = (int*)malloc(sizeof(int) * MAX);
-    deque->front = -1;
-    deque->rear = -1;
-    return deque;
-} 
+Deque *init_Deque() {
+    Deque *dq = (Deque*)malloc(sizeof(Deque));
+    dq->arr = (int*)malloc(sizeof(int) * MAX);
+    dq->front = dq->rear = -1;
+    return dq;
+}
 
 int isEmpty(Deque *dq) {
     return dq->front == -1;
 }
 
 int isFull(Deque *dq) {
-    return ((dq->front - 1 == dq->rear) || (dq->front == 0 && dq->rear == MAX - 1));
+    return (dq->rear + 1) % MAX == dq->front;
 }
 
+//O(1)
 void insertFront(Deque *dq , int data) {
     if(isFull(dq)) {
         printf("Deque is Full");
         return;
     }
-    if(isEmpty(dq)) {
-        dq->front = 0;
-        dq->rear = 0;
-    } else if(dq->front == 0) dq->front = MAX - 1;
-    else dq->front--;
+
+    if(isEmpty(dq)) dq->front = dq->rear = 0;
+    else dq->front = (dq->front - 1 + MAX) % MAX;
     dq->arr[dq->front] = data;
 }
 
+//O(1)
 void insertRear(Deque *dq , int data) {
     if(isFull(dq)) {
         printf("Deque is Full");
         return;
     }
-    if(isEmpty(dq)) {
-        dq->front = 0;
-        dq->rear = 0;
-    } else if(dq->rear == MAX - 1) dq->rear = 0;
-    else dq->rear++;
+
+    if(isEmpty(dq)) dq->front = dq->rear = 0;
+    else dq->rear = (dq->rear + 1) % MAX;
     dq->arr[dq->rear] = data;
 }
 
-int deleteFront(Deque *dq) {
+//O(1)
+void deleteFront(Deque *dq) {
     if(isEmpty(dq)) {
         printf("Deque is Empty");
-        return -1;
+        return;
     }
-    int dataValue = dq->arr[dq->front];
+
     if(dq->front == dq->rear) dq->front = dq->rear = -1;
-    else dq->front++;
-    return dataValue;
+    else dq->front = (dq->front + 1) % MAX;
 }
 
-int deleteRear(Deque *dq) {
+//O(1)
+void deleteRear(Deque *dq) {
+    if(isEmpty(dq)) {
+        printf("Deque is Emtpy");
+        return;
+    }
+
+    if(dq->front == dq->rear) dq->front = dq->rear = -1;
+    else dq->rear = (dq->rear - 1 + MAX) % MAX;
+}
+
+//O(1)
+int getFront(Deque *dq) {
     if(isEmpty(dq)) {
         printf("Deque is Empty");
-        return -1;
+        return INT_MIN;
     }
-    int dataValue = dq->arr[dq->rear];
-    if(dq->front == dq->rear) dq->front = dq->rear = -1;
-    else dq->rear--;
-    return dataValue;
+
+    return dq->arr[dq->front];
 }
 
-void display(Deque *dq) {
-    int c = dq->front;
+//O(1)
+int getRear(Deque *dq) {
+    if(isEmpty(dq)) {
+        printf("Deque is Empty");
+        return INT_MIN;
+    }
+
+    return dq->arr[dq->rear];
+}
+
+//O(n)
+void diplay(Deque *dq) {
+    int counter = dq->front;
+
     while(1) {
-        printf("%i ",dq->arr[c]);
-        if(c == dq->rear) break;
-        c = (c + 1) % MAX;
+        printf("%i ",dq->arr[counter]);
+        if(counter == dq->rear) break;;
+        counter = (counter + 1) % MAX;
     }
     printf("\n");
 }
 
 int main(void) {
+    Deque *dq = init_Deque();
 
-    Deque *dq = initDeque();
     insertFront(dq,1);
     insertFront(dq,2);
     insertRear(dq,3);
-    display(dq);
+    insertRear(dq,4);
+    deleteRear(dq);
+    diplay(dq);
 
-    return 0;
+    free(dq->arr);
+    free(dq);
 }
